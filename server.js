@@ -44,5 +44,4 @@ app.use((request, response) => {
   logger.getErrorLog(url);
 });
 
-//app.listen(PORT);
-module.exports = app;
+app.listen(PORT);

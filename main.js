@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron');
 const http = require('http');
-const expressApp = require('./server.js');
 
 let mainWindow;
 
@@ -21,23 +20,14 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	expressApp
-		.listen(3000)
-		.on('listening', () => {
-			const checkServer = setInterval(() => {
-				http
-					.get('http://localhost:3000', (res) => {
-						if (res.statusCode === 200) {
-							clearInterval(checkServer);
-							createWindow();
-						}
-					})
-					.on('error', () => {});
-			}, 1000);
-		})
-		.on('error', (err) => {
-			app.quit();
-		});
+  const checkServer = setInterval(() => {
+    http.get('http://localhost:3000', (res) => {
+      if (res.statusCode === 200) {
+        clearInterval(checkServer);
+        createWindow();
+      }
+    }).on('error', () => {});
+  }, 500);
 
 	app.on('window-all-closed', () => {
 		if (process.platform !== 'darwin') {
